@@ -12,11 +12,11 @@ local SuFramework = {
 }
 
 function SuFramework.createMenu(varnamePrefix, reference, tabName)
-    if not varnamePrefix then
+    if not varnamePrefix or not reference or not tabName then
         return false;
     end
 
-    SuFramework.mainGuiObjects.tab = gui.Tab(reference, varnamePrefix .. ".tab", tabName)
+    SuFramework.mainGuiObjects.tab = gui.Tab(reference, varnamePrefix:lower() .. ".tab", tabName)
     SuFramework.mainGuiObjects.selectorGroup = gui.Groupbox(SuFramework.mainGuiObjects.tab, "Selector", 16, 16, 600, 64)
     SuFramework.mainGuiObjects.categorySelector = gui.Combobox(SuFramework.mainGuiObjects.selectorGroup, "selector.category", "Category", "")
     SuFramework.mainGuiObjects.featureSelector = gui.Combobox(SuFramework.mainGuiObjects.selectorGroup, "selector.feature", "Feature", "")
@@ -286,6 +286,41 @@ function SuFramework.addMultibox(varname, name, description)
 
     SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
     gui.Multibox(SuFramework.mainGuiObjects.configureGroup, name)
+
+    if SuFramework.currentColumn == 2 then
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
+    end
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
+
+    if description then
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetDescription(description);
+        SuFramework.currentY = SuFramework.currentY + 48*1.5;
+    else
+        SuFramework.currentY = SuFramework.currentY + 48;
+    end
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
+
+    return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
+end
+
+function SuFramework.addKeybox(varname, name, key, description)
+
+    if SuFramework.menuCreated == false then
+        return false;
+    end
+
+    local catName = SuFramework.categoryNames[SuFramework.categoryCount]
+    catName = catName:gsub(" ", "");
+    catName = catName:lower();
+
+    local featName = SuFramework.featureNames[SuFramework.categoryCount][SuFramework.featureCount];
+    featName = featName:gsub(" ", "");
+    featName = featName:lower();
+
+    local awVarname = catName .. "." .. featName .. "." .. varname:lower();
+
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
+    gui.Keybox(SuFramework.mainGuiObjects.configureGroup, awVarname, name, key)
 
     if SuFramework.currentColumn == 2 then
         SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
