@@ -107,11 +107,14 @@ function SuFramework.addCheckbox(varname, name, defaultValue, description, custo
     end
     SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
 
-    if description then
-        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetDescription(description);
-        SuFramework.currentY = SuFramework.currentY + 28*1.66;
-    else
-        SuFramework.currentY = SuFramework.currentY + 28;
+
+    if not customParent then
+        if description then
+            SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetDescription(description);
+            SuFramework.currentY = SuFramework.currentY + 28*1.66;
+        else
+            SuFramework.currentY = SuFramework.currentY + 28;
+        end
     end
     SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
 
@@ -143,7 +146,7 @@ function SuFramework.addSlider(varname, name, defaultValue, min, max, stepSize, 
 
     if description then
         SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetDescription(description);
-        SuFramework.currentY = SuFramework.currentY + 48*1.2;
+        SuFramework.currentY = SuFramework.currentY + 48*1.4;
     else
         SuFramework.currentY = SuFramework.currentY + 48;
     end
@@ -177,7 +180,7 @@ function SuFramework.addCombobox(varname, name, optionsTable, description)
 
     if description then
         SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetDescription(description);
-        SuFramework.currentY = SuFramework.currentY + 48*1.5;
+        SuFramework.currentY = SuFramework.currentY + 48*1.4;
     else
         SuFramework.currentY = SuFramework.currentY + 48;
     end
