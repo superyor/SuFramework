@@ -1,5 +1,5 @@
 local SuFramework = {
-    version = "1";
+    version = "2";
     link = "https://raw.githubusercontent.com/superyor/SuFramework/master/SuFramework.lua";
     versionLink = "https://raw.githubusercontent.com/superyor/SuFramework/master/version.txt";
 
@@ -412,7 +412,7 @@ local function updateCheck()
         newScript = http.Get(SuFramework.link)
         script:Write(newScript);
         script:Close()
-        updateCheck()
+        return false;
     else
         return true;
     end
@@ -420,4 +420,6 @@ end
 
 if updateCheck() then
     return SuFramework;
+else
+    return "Updated";
 end
