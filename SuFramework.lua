@@ -1,4 +1,8 @@
 local SuFramework = {
+    version = "1";
+    link = "https://raw.githubusercontent.com/superyor/SuFramework/master/SuFramework.lua";
+    versionLink = "https://raw.githubusercontent.com/superyor/SuFramework/master/version.txt";
+
     mainGuiObjects = {};
     menuCreated = false;
     varnamePrefix = "",
@@ -341,6 +345,46 @@ function SuFramework.addKeybox(varname, name, key, description)
     return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
 end
 
+function SuFramework.addButton(varname, name, callback)
+
+    if SuFramework.menuCreated == false then
+        return false;
+    end
+
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
+    gui.Button(SuFramework.mainGuiObjects.configureGroup, name, callback)
+
+    if SuFramework.currentColumn == 2 then
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
+    end
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
+
+    SuFramework.currentY = SuFramework.currentY + 32+16;
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
+
+    return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
+end
+
+function SuFramework.addListbox(varname, height, optionsTable)
+
+    if SuFramework.menuCreated == false then
+        return false;
+    end
+
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
+    gui.Listbox(SuFramework.mainGuiObjects.configureGroup, varname, height, unpack(optionsTable))
+
+    if SuFramework.currentColumn == 2 then
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
+    end
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
+
+    SuFramework.currentY = SuFramework.currentY + height+16;
+    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
+
+    return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
+end
+
 function SuFramework.handleUI()
 
     SuFramework.mainGuiObjects.featureSelector:SetOptions(unpack(SuFramework.featureNames[SuFramework.mainGuiObjects.categorySelector:GetValue() + 1]))
@@ -362,4 +406,18 @@ function SuFramework.handleUI()
     end
 end
 
-return SuFramework;
+local function updateCheck()
+    if SuFramework.version ~= http.Get(SuFramework.versionLink) then
+        local script = file.Open("Modules\\Superyu\\SuFramework.lua", "w");
+        newScript = http.Get(SuFramework.link)
+        script:Write(newScript);
+        script:Close()
+        updateCheck()
+    else
+        return true;
+    end
+end
+
+if updateCheck() then
+    return SuFramework;
+end
