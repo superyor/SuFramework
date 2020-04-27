@@ -1,5 +1,5 @@
 local SuFramework = {
-    version = "2";
+    version = "1";
     link = "https://raw.githubusercontent.com/superyor/SuFramework/master/SuFramework.lua";
     versionLink = "https://raw.githubusercontent.com/superyor/SuFramework/master/version.txt";
 
