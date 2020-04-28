@@ -1,5 +1,5 @@
 local SuFramework = {
-    version = "1";
+    version = "2";
     link = "https://raw.githubusercontent.com/superyor/SuFramework/master/SuFramework.lua";
     versionLink = "https://raw.githubusercontent.com/superyor/SuFramework/master/version.txt";
 
@@ -13,6 +13,7 @@ local SuFramework = {
     currentColumn = 0;
     currentY = 0;
     categories = {};
+    lastCategorySelection = 0;
 }
 
 function SuFramework.createMenu(varnamePrefix, reference, tabName)
@@ -388,6 +389,18 @@ end
 function SuFramework.handleUI()
 
     SuFramework.mainGuiObjects.featureSelector:SetOptions(unpack(SuFramework.featureNames[SuFramework.mainGuiObjects.categorySelector:GetValue() + 1]))
+
+    if SuFramework.lastCategorySelection ~= SuFramework.mainGuiObjects.categorySelector:GetValue()+1 then
+        local c = 0;
+        for k, v in pairs(SuFramework.featureNames[SuFramework.mainGuiObjects.categorySelector:GetValue() + 1]) do
+            c = c + 1;
+        end
+        if SuFramework.mainGuiObjects.featureSelector:GetValue()+1 > c then
+            SuFramework.mainGuiObjects.featureSelector:SetValue(c+1);
+        end
+
+        SuFramework.lastCategorySelection = SuFramework.mainGuiObjects.categorySelector:GetValue()+1;
+    end
 
     for catKey, categories in pairs(SuFramework.categories) do
         for featKey, features in pairs(categories) do
