@@ -1,5 +1,5 @@
 local SuFramework = {
-    version = "2";
+    version = "3";
     link = "https://raw.githubusercontent.com/superyor/SuFramework/master/SuFramework.lua";
     versionLink = "https://raw.githubusercontent.com/superyor/SuFramework/master/version.txt";
 
@@ -194,7 +194,7 @@ function SuFramework.addCombobox(varname, name, optionsTable, description)
     return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
 end
 
-function SuFramework.addColorPicker(varname, name, colorTable)
+function SuFramework.addColorPicker(varname, name, colorTable, customParent)
 
     if SuFramework.menuCreated == false then
         return false;
@@ -209,16 +209,24 @@ function SuFramework.addColorPicker(varname, name, colorTable)
     featName = featName:lower();
 
     local awVarname = catName .. "." .. featName .. "." .. varname:lower();
-    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
-    gui.ColorPicker(SuFramework.mainGuiObjects.configureGroup, awVarname, name, unpack(colorTable))
 
-    if SuFramework.currentColumn == 2 then
-        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
+    if customParent then
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
+        gui.ColorPicker(customParent, awVarname, name, unpack(colorTable))
+    else
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname] =
+        gui.ColorPicker(SuFramework.mainGuiObjects.configureGroup, awVarname, name, unpack(colorTable))
     end
-    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
 
-    SuFramework.currentY = SuFramework.currentY + 24;
-    SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
+    if not customParent then
+        if SuFramework.currentColumn == 2 then
+            SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosX(300-8);
+        end
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetPosY(SuFramework.currentY);
+
+        SuFramework.currentY = SuFramework.currentY + 24;
+        SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname]:SetWidth(300-16-4)
+    end
 
     return SuFramework.categories[SuFramework.categoryCount][SuFramework.featureCount][varname];
 end
